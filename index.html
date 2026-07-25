@@ -31,7 +31,7 @@
       <div class="star-field" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       <div class="hero-meta reveal">[ 01 — 2025 / 2026 ]</div>
       <p class="eyebrow reveal">CREATIVE DEVELOPER <span>×</span> SHENZHEN</p>
-      <h1 class="reveal">把复杂的<br /><em>想象</em>变成<br />可触碰的现实。</h1>
+      <h1 class="reveal glitch-title" aria-label="把复杂的想象变成可触碰的现实。"><span class="glitch-line" data-text="把复杂的">把复杂的</span><span class="glitch-line" data-text="想象变成"><em>想象</em>变成</span><span class="glitch-line" data-text="可触碰的现实。">可触碰的现实。</span></h1>
       <div class="hero-bottom reveal">
         <p>我是肉夹馍，专注于把品牌、叙事和代码编织成值得停留的数字体验。</p>
         <a class="round-link" href="#work" aria-label="查看精选作品"><span>↓</span></a>
@@ -40,9 +40,7 @@
       <div class="scroll-note">SCROLL TO EXPLORE <b>↓</b></div>
     </section>
 
-    <section class="marquee" aria-label="能力标签"><div>
-      <span>WEB EXPERIENCES</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i><span>IDENTITY SYSTEMS</span><i>✳</i><span>WEB EXPERIENCES</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i>
-    </div></section>
+    <section class="marquee" aria-label="能力标签"><div class="marquee-viewport"><div class="marquee-track"><div class="marquee-group"><span>WEB EXPERIENCES</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i><span>IDENTITY SYSTEMS</span><i>✳</i><span>WEB EXPERIENCES</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i><span>IDENTITY SYSTEMS</span><i>✳</i><span>WEB EXPERIENCES</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i><span>IDENTITY SYSTEMS</span><i>✳</i></div><div class="marquee-group" aria-hidden="true"><span>WEB EXPERIENCES</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i><span>IDENTITY SYSTEMS</span><i>✳</i><span>WEB EXPERIENCES</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i><span>IDENTITY SYSTEMS</span><i>✳</i><span>WEB EXPERIENCES</span><i>✳</i><span>CREATIVE CODE</span><i>✳</i><span>IDENTITY SYSTEMS</span><i>✳</i></div></div></div></section>
 
     <section id="work" class="work wrap">
       <div class="section-head"><span class="index">02 / SELECTED WORK</span><p>每个项目都是一次有目的的<br />实验，关于技术，也关于感受。</p></div>
@@ -80,8 +78,9 @@
   </main>
   <section class="project-modal" id="project-detail" aria-hidden="true" aria-labelledby="modal-title" role="dialog" aria-modal="true">
     <div class="modal-shade" data-close-modal></div>
-    <div class="modal-panel"><button class="modal-close" type="button" data-close-modal aria-label="关闭详情">×</button><span class="modal-kicker">CASE STUDY / <b>01</b></span><h2 id="modal-title">Morrow</h2><p class="modal-subtitle"></p><div class="modal-copy"><p class="modal-description"></p><div class="modal-meta"><div><span>ROLE</span><strong class="modal-role"></strong></div><div><span>STACK</span><strong class="modal-stack"></strong></div><div><span>YEAR</span><strong class="modal-year"></strong></div></div></div><a class="modal-link" href="#" target="_blank" rel="noreferrer">访问项目 <span>↗</span></a></div>
+    <div class="modal-panel"><button class="modal-close" type="button" data-close-modal aria-label="关闭详情">×</button><span class="modal-kicker">CASE STUDY / <b>01</b></span><h2 id="modal-title">Morrow</h2><p class="modal-subtitle"></p><div class="modal-tabs" role="tablist" aria-label="项目内容切换"><button class="modal-tab active" type="button" role="tab" aria-selected="true" data-modal-tab="details">01<span>简介</span></button><button class="modal-tab" type="button" role="tab" aria-selected="false" data-modal-tab="gallery">02<span>图片</span></button><button class="modal-tab" type="button" role="tab" aria-selected="false" data-modal-tab="video">03<span>视频</span></button></div><div class="modal-pane active" data-modal-pane="details"><div class="modal-copy"><p class="modal-description"></p><div class="modal-meta"><div><span>ROLE</span><strong class="modal-role"></strong></div><div><span>STACK</span><strong class="modal-stack"></strong></div><div><span>YEAR</span><strong class="modal-year"></strong></div></div></div><a class="modal-link" href="#" target="_blank" rel="noreferrer">访问项目 <span>↗</span></a></div><div class="modal-pane modal-gallery" data-modal-pane="gallery"><button class="gallery-image" type="button" aria-label="放大查看项目图片"><img class="gallery-current-image" src="" alt="" /></button><div class="gallery-controls"><button class="gallery-arrow" type="button" data-gallery-direction="previous" aria-label="上一张图片">←</button><div class="gallery-dots" aria-label="图片切换"></div><button class="gallery-arrow" type="button" data-gallery-direction="next" aria-label="下一张图片">→</button></div></div><div class="modal-pane modal-video" data-modal-pane="video"><video class="project-video" controls playsinline hidden></video><div class="video-empty"><span>03 / VIDEO DEMO</span><p>项目演示视频即将上线</p></div></div></div>
   </section>
+  <section class="image-lightbox" aria-hidden="true" role="dialog" aria-label="图片预览"><button class="lightbox-shade" type="button" data-close-lightbox aria-label="关闭图片预览"></button><img class="lightbox-image" src="" alt="" /><button class="lightbox-close" type="button" data-close-lightbox aria-label="关闭图片预览">×</button></section>
   <script src="script.js"></script>
 </body>
 </html>
