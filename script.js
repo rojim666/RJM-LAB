@@ -69,6 +69,7 @@ const modalPanes = document.querySelectorAll('[data-modal-pane]');
 const galleryImage = document.querySelector('.gallery-current-image');
 const galleryDots = document.querySelector('.gallery-dots');
 const projectVideoLink = document.querySelector('.project-video-link');
+const projectVideoPoster = document.querySelector('.project-video-poster');
 const lightbox = document.querySelector('.image-lightbox');
 const lightboxImage = document.querySelector('.lightbox-image');
 const resumeModal = document.querySelector('.resume-modal');
@@ -90,8 +91,14 @@ const applyModalPane = (name) => {
     tab.setAttribute('aria-selected', String(active));
   });
   modalPanes.forEach((pane) => pane.classList.toggle('active', pane.dataset.modalPane === name));
-  if (name !== 'video') projectVideoLink.style.display = 'none';
-  else projectVideoLink.style.display = '';
+  if (name !== 'video' && projectVideoLink) projectVideoLink.style.display = 'none';
+  else if (projectVideoLink) {
+    projectVideoLink.style.display = '';
+    // 切到视频 tab 时才加载封面
+    if (projectVideoPoster && currentDetail?.images?.length && !projectVideoPoster.src) {
+      projectVideoPoster.src = currentDetail.images[0];
+    }
+  }
   activePane = name;
 };
 
@@ -171,7 +178,7 @@ const closeModal = () => {
   turningPage?.remove();
   turningPage = null;
   closeLightbox();
-  projectVideoLink.style.display = 'none';
+  if (projectVideoLink) projectVideoLink.style.display = 'none';
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
@@ -194,13 +201,15 @@ document.querySelectorAll('.project .visual').forEach((link) => {
     currentDetail = detail;
     currentImageIndex = 0;
     renderGallery();
-    projectVideoLink.style.display = detail.video ? '' : 'none';
-    if (detail.video) {
-      projectVideoLink.href = detail.video;
-      projectVideoLink.style.backgroundImage = detail.images?.length ? `url(${detail.images[0]})` : '';
-    } else {
-      projectVideoLink.removeAttribute('href');
-      projectVideoLink.style.backgroundImage = '';
+    if (projectVideoLink) {
+      projectVideoLink.style.display = detail.video ? '' : 'none';
+      if (detail.video) {
+        projectVideoLink.href = detail.video;
+      } else {
+        projectVideoLink.removeAttribute('href');
+      }
+      // 封面图延迟到切换视频 tab 时加载
+      if (projectVideoPoster) projectVideoPoster.removeAttribute('src');
     }
     showModalPane('details', false);
     modal.classList.add('open');
