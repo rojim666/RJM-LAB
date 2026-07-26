@@ -39,19 +39,19 @@ const projectDetails = {
 
 Object.assign(projectDetails.morrow, {
   images: ['imgs/SztuCode/SztuCode1.png', 'imgs/SztuCode/SztuCode2.png', 'imgs/SztuCode/SztuCode3.png', 'imgs/SztuCode/SztuCode4.png', 'imgs/SztuCode/SztuCode5.png', 'imgs/SztuCode/SztuCode6.png', 'imgs/SztuCode/SztuCode7.png'],
-  video: 'imgs/SztuCode/SztuCode.mp4'
+  video: 'https://easylink.cc/y6v7j8'
 });
 Object.assign(projectDetails.radio, {
   images: ['imgs/AgentHub/AgentHub.png', 'imgs/AgentHub/AgentHub2.png', 'imgs/AgentHub/AgentHub3.png', 'imgs/AgentHub/AgentHub4.png', 'imgs/AgentHub/AgentHub5.png', 'imgs/AgentHub/AgentHub6.png', 'imgs/AgentHub/AgentHub7.png', 'imgs/AgentHub/AgentHub8.png', 'imgs/AgentHub/AgentHub9.png', 'imgs/AgentHub/AgentHub10.png', 'imgs/AgentHub/AgentHub11.png', 'imgs/AgentHub/AgentHub12.png', 'imgs/AgentHub/AgentHub13.png', 'imgs/AgentHub/AgentHub14.png', 'imgs/AgentHub/AgentHub15.png', 'imgs/AgentHub/AgentHub16.png'],
-  video: 'imgs/AgentHub/AgentHub.mp4'
+  video: 'https://easylink.cc/b7y9ck'
 });
 Object.assign(projectDetails.data, {
   images: ['imgs/UT-bench/UT-bench.png', 'imgs/UT-bench/UT-bench1.png', 'imgs/UT-bench/UT-bench2.png', 'imgs/UT-bench/UT-bench3.png', 'imgs/UT-bench/UT-bench4.png', 'imgs/UT-bench/UT-bench5.png', 'imgs/UT-bench/UT-bench6.png', 'imgs/UT-bench/UT-bench7.png', 'imgs/UT-bench/UT-bench8.png', 'imgs/UT-bench/UT-bench9.png', 'imgs/UT-bench/UT-bench10.png', 'imgs/UT-bench/UT-bench11.png', 'imgs/UT-bench/UT-bench12.png', 'imgs/UT-bench/UT-bench13.png', 'imgs/UT-bench/UT-bench14.png', 'imgs/UT-bench/UT-bench15.png', 'imgs/UT-bench/UT-bench16.png'],
-  video: 'imgs/UT-bench/UT-bench.mp4'
+  video: 'https://easylink.cc/foawx3'
 });
 Object.assign(projectDetails.pulse, {
   images: ['imgs/Redyoubegging/Redyoubegging.png', 'imgs/Redyoubegging/Redyoubegging1.png', 'imgs/Redyoubegging/Redyoubegging2.png', 'imgs/Redyoubegging/Redyoubegging3.png', 'imgs/Redyoubegging/Redyoubegging4.png', 'imgs/Redyoubegging/Redyoubegging5.png', 'imgs/Redyoubegging/Redyoubegging6.png', 'imgs/Redyoubegging/Redyoubegging7.png'],
-  video: 'imgs/Redyoubegging/Redyoubegging.mp4'
+  video: 'https://easylink.cc/mb5uyg'
 });
 
 const modal = document.querySelector('.project-modal');
@@ -68,7 +68,7 @@ const modalTabs = document.querySelectorAll('[data-modal-tab]');
 const modalPanes = document.querySelectorAll('[data-modal-pane]');
 const galleryImage = document.querySelector('.gallery-current-image');
 const galleryDots = document.querySelector('.gallery-dots');
-const projectVideo = document.querySelector('.project-video');
+const projectVideoLink = document.querySelector('.project-video-link');
 const lightbox = document.querySelector('.image-lightbox');
 const lightboxImage = document.querySelector('.lightbox-image');
 const resumeModal = document.querySelector('.resume-modal');
@@ -90,7 +90,8 @@ const applyModalPane = (name) => {
     tab.setAttribute('aria-selected', String(active));
   });
   modalPanes.forEach((pane) => pane.classList.toggle('active', pane.dataset.modalPane === name));
-  if (name !== 'video') projectVideo.pause();
+  if (name !== 'video') projectVideoLink.style.display = 'none';
+  else projectVideoLink.style.display = '';
   activePane = name;
 };
 
@@ -170,7 +171,7 @@ const closeModal = () => {
   turningPage?.remove();
   turningPage = null;
   closeLightbox();
-  projectVideo.pause();
+  projectVideoLink.style.display = 'none';
   modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
   document.body.style.overflow = '';
@@ -193,10 +194,14 @@ document.querySelectorAll('.project .visual').forEach((link) => {
     currentDetail = detail;
     currentImageIndex = 0;
     renderGallery();
-    projectVideo.pause();
-    projectVideo.hidden = !detail.video;
-    if (detail.video) projectVideo.src = detail.video;
-    else projectVideo.removeAttribute('src');
+    projectVideoLink.style.display = detail.video ? '' : 'none';
+    if (detail.video) {
+      projectVideoLink.href = detail.video;
+      projectVideoLink.style.backgroundImage = detail.images?.length ? `url(${detail.images[0]})` : '';
+    } else {
+      projectVideoLink.removeAttribute('href');
+      projectVideoLink.style.backgroundImage = '';
+    }
     showModalPane('details', false);
     modal.classList.add('open');
     modal.setAttribute('aria-hidden', 'false');
