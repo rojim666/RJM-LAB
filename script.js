@@ -37,6 +37,23 @@ const projectDetails = {
   pulse: { number: '04', title: '红柚起始页', subtitle: '简洁、美观、实用的浏览器起始页', description: '一个注重效率与视觉体验的浏览器起始页，为日常浏览提供清晰、舒适的入口。', role: '独立开发者', stack: 'Web Frontend', year: '2025.04-至今', link: 'https://github.com/rojim666/RedyouBeginning', images: ['imgs/Redyoubegging/Redyoubegging.png'] }
 };
 
+Object.assign(projectDetails.morrow, {
+  images: ['imgs/SztuCode/SztuCode1.png', 'imgs/SztuCode/SztuCode2.png', 'imgs/SztuCode/SztuCode3.png', 'imgs/SztuCode/SztuCode4.png', 'imgs/SztuCode/SztuCode5.png', 'imgs/SztuCode/SztuCode6.png', 'imgs/SztuCode/SztuCode7.png'],
+  video: 'imgs/SztuCode/SztuCode.mp4'
+});
+Object.assign(projectDetails.radio, {
+  images: ['imgs/AgentHub/AgentHub.png', 'imgs/AgentHub/AgentHub2.png', 'imgs/AgentHub/AgentHub3.png', 'imgs/AgentHub/AgentHub4.png', 'imgs/AgentHub/AgentHub5.png', 'imgs/AgentHub/AgentHub6.png', 'imgs/AgentHub/AgentHub7.png', 'imgs/AgentHub/AgentHub8.png', 'imgs/AgentHub/AgentHub9.png', 'imgs/AgentHub/AgentHub10.png', 'imgs/AgentHub/AgentHub11.png', 'imgs/AgentHub/AgentHub12.png', 'imgs/AgentHub/AgentHub13.png', 'imgs/AgentHub/AgentHub14.png', 'imgs/AgentHub/AgentHub15.png', 'imgs/AgentHub/AgentHub16.png'],
+  video: 'imgs/AgentHub/AgentHub.mp4'
+});
+Object.assign(projectDetails.data, {
+  images: ['imgs/UT-bench/UT-bench.png', 'imgs/UT-bench/UT-bench1.png', 'imgs/UT-bench/UT-bench2.png', 'imgs/UT-bench/UT-bench3.png', 'imgs/UT-bench/UT-bench4.png', 'imgs/UT-bench/UT-bench5.png', 'imgs/UT-bench/UT-bench6.png', 'imgs/UT-bench/UT-bench7.png', 'imgs/UT-bench/UT-bench8.png', 'imgs/UT-bench/UT-bench9.png', 'imgs/UT-bench/UT-bench10.png', 'imgs/UT-bench/UT-bench11.png', 'imgs/UT-bench/UT-bench12.png', 'imgs/UT-bench/UT-bench13.png', 'imgs/UT-bench/UT-bench14.png', 'imgs/UT-bench/UT-bench15.png', 'imgs/UT-bench/UT-bench16.png'],
+  video: 'imgs/UT-bench/UT-bench.mp4'
+});
+Object.assign(projectDetails.pulse, {
+  images: ['imgs/Redyoubegging/Redyoubegging.png', 'imgs/Redyoubegging/Redyoubegging1.png', 'imgs/Redyoubegging/Redyoubegging2.png', 'imgs/Redyoubegging/Redyoubegging3.png', 'imgs/Redyoubegging/Redyoubegging4.png', 'imgs/Redyoubegging/Redyoubegging5.png', 'imgs/Redyoubegging/Redyoubegging6.png', 'imgs/Redyoubegging/Redyoubegging7.png'],
+  video: 'imgs/Redyoubegging/Redyoubegging.mp4'
+});
+
 const modal = document.querySelector('.project-modal');
 const modalTitle = document.querySelector('#modal-title');
 const modalKicker = document.querySelector('.modal-kicker b');
@@ -52,10 +69,15 @@ const modalPanes = document.querySelectorAll('[data-modal-pane]');
 const galleryImage = document.querySelector('.gallery-current-image');
 const galleryDots = document.querySelector('.gallery-dots');
 const projectVideo = document.querySelector('.project-video');
-const videoEmpty = document.querySelector('.video-empty');
 const lightbox = document.querySelector('.image-lightbox');
 const lightboxImage = document.querySelector('.lightbox-image');
+const resumeModal = document.querySelector('.resume-modal');
+const resumeTrigger = document.querySelector('[data-open-resume]');
+const resumeViewer = document.querySelector('.resume-viewer');
+const resumeImage = resumeViewer.querySelector('img');
 let lastTrigger;
+let lastResumeTrigger;
+let resumeScale = 100;
 let currentDetail;
 let currentImageIndex = 0;
 let activePane = 'details';
@@ -74,14 +96,14 @@ const applyModalPane = (name) => {
 
 const showModalPane = (name, animate = true) => {
   if (name === activePane && animate) return;
-  if (!animate || !modal.classList.contains('open') || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (!animate || !modal.classList.contains('open')) {
     applyModalPane(name);
     return;
   }
   turningPage?.remove();
   const bounds = modalPanel.getBoundingClientRect();
   turningPage = modalPanel.cloneNode(true);
-  turningPage.className = 'modal-panel page-turn-copy';
+  turningPage.className = 'modal-panel page-turn-copy article-page-turn';
   turningPage.setAttribute('aria-hidden', 'true');
   Object.assign(turningPage.style, {
     position: 'fixed',
@@ -89,7 +111,8 @@ const showModalPane = (name, animate = true) => {
     top: `${bounds.top}px`,
     width: `${bounds.width}px`,
     height: `${bounds.height}px`,
-    margin: '0'
+    margin: '0',
+    transform: 'none'
   });
   document.body.appendChild(turningPage);
   applyModalPane(name);
@@ -118,6 +141,29 @@ const renderGallery = () => {
 const closeLightbox = () => {
   lightbox.classList.remove('open');
   lightbox.setAttribute('aria-hidden', 'true');
+};
+
+const closeResume = () => {
+  resumeModal.classList.remove('open');
+  resumeModal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+  lastResumeTrigger?.focus();
+};
+
+const setResumeScale = (scale) => {
+  resumeScale = Math.min(220, Math.max(70, scale));
+  resumeImage.style.width = `${resumeScale}%`;
+};
+
+const changeGalleryImage = (direction) => {
+  const count = currentDetail?.images?.length ?? 0;
+  if (!count) return;
+  currentImageIndex = (currentImageIndex + (direction === 'next' ? 1 : -1) + count) % count;
+  renderGallery();
+  if (lightbox.classList.contains('open')) {
+    lightboxImage.src = galleryImage.src;
+    lightboxImage.alt = galleryImage.alt;
+  }
 };
 
 const closeModal = () => {
@@ -149,7 +195,6 @@ document.querySelectorAll('.project .visual').forEach((link) => {
     renderGallery();
     projectVideo.pause();
     projectVideo.hidden = !detail.video;
-    videoEmpty.hidden = Boolean(detail.video);
     if (detail.video) projectVideo.src = detail.video;
     else projectVideo.removeAttribute('src');
     showModalPane('details', false);
@@ -162,10 +207,7 @@ document.querySelectorAll('.project .visual').forEach((link) => {
 
 modalTabs.forEach((tab) => tab.addEventListener('click', () => showModalPane(tab.dataset.modalTab)));
 document.querySelectorAll('[data-gallery-direction]').forEach((button) => button.addEventListener('click', () => {
-  const count = currentDetail?.images?.length ?? 0;
-  if (!count) return;
-  currentImageIndex = (currentImageIndex + (button.dataset.galleryDirection === 'next' ? 1 : -1) + count) % count;
-  renderGallery();
+  changeGalleryImage(button.dataset.galleryDirection);
 }));
 document.querySelector('.gallery-image').addEventListener('click', () => {
   lightboxImage.src = galleryImage.src;
@@ -174,9 +216,30 @@ document.querySelector('.gallery-image').addEventListener('click', () => {
   lightbox.setAttribute('aria-hidden', 'false');
 });
 document.querySelectorAll('[data-close-lightbox]').forEach((element) => element.addEventListener('click', closeLightbox));
+document.querySelectorAll('[data-lightbox-direction]').forEach((button) => button.addEventListener('click', () => {
+  changeGalleryImage(button.dataset.lightboxDirection);
+}));
+resumeTrigger.addEventListener('click', (event) => {
+  event.preventDefault();
+  lastResumeTrigger = resumeTrigger;
+  resumeModal.classList.add('open');
+  resumeModal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+  setResumeScale(100);
+  resumeViewer.scrollTo({ top: 0, left: 0 });
+  resumeModal.querySelector('.resume-close').focus();
+});
+document.querySelectorAll('[data-close-resume]').forEach((element) => element.addEventListener('click', closeResume));
+document.querySelectorAll('[data-resume-zoom]').forEach((button) => button.addEventListener('click', () => {
+  const action = button.dataset.resumeZoom;
+  setResumeScale(action === 'in' ? resumeScale + 20 : action === 'out' ? resumeScale - 20 : 100);
+}));
 document.querySelectorAll('[data-close-modal]').forEach((element) => element.addEventListener('click', closeModal));
 document.addEventListener('keydown', (event) => {
-  if (event.key !== 'Escape') return;
-  if (lightbox.classList.contains('open')) closeLightbox();
-  else if (modal.classList.contains('open')) closeModal();
+  if (lightbox.classList.contains('open')) {
+    if (event.key === 'ArrowLeft') changeGalleryImage('previous');
+    else if (event.key === 'ArrowRight') changeGalleryImage('next');
+    else if (event.key === 'Escape') closeLightbox();
+  } else if (event.key === 'Escape' && resumeModal.classList.contains('open')) closeResume();
+  else if (event.key === 'Escape' && modal.classList.contains('open')) closeModal();
 });
